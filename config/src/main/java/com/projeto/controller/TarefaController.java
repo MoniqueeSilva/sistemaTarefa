@@ -36,12 +36,22 @@ public class TarefaController {
 
     @PutMapping("/{id}")
     public String atualizar(@PathVariable String id, @RequestBody Tarefa tarefa) {
+        // TRUQUE: Se o ID chegou sem o "tarefas/", a gente coloca na mão
+        if (!id.startsWith("tarefas/")) {
+            id = "tarefas/" + id;
+        }
+        
         service.atualizar(id, tarefa);
         return "Tarefa atualizada!";
     }
 
     @DeleteMapping("/{id}")
     public String deletar(@PathVariable String id) {
+        // TRUQUE: Mesma coisa aqui. O Postman manda "1-A", a gente transforma em "tarefas/1-A"
+        if (!id.startsWith("tarefas/")) {
+            id = "tarefas/" + id;
+        }
+
         service.deletar(id);
         return "Tarefa deletada!";
     }

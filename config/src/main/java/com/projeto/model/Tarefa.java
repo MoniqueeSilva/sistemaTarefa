@@ -6,6 +6,10 @@ public class Tarefa {
     private String id, descricao;
     private boolean concluida;
 
+    // Construtor vazio para o Jackson/Spring poderem criar o objeto
+    public Tarefa() {
+    }
+
     public Tarefa(String id, String descricao, boolean concluida){
         this.id = id;
         this.descricao = descricao;
