@@ -1,14 +1,9 @@
 package com.projeto.service;
 
 import java.util.List;
-
-import com.projeto.model.StatusTransacao;
 import com.projeto.model.Tarefa;
 import net.ravendb.client.documents.DocumentStore;
 import org.springframework.stereotype.Service;
-
-// O Service faz a "lógica de negócio", valida a lógica do sistema, aplica regras
-// Controla o fluxo que ocorre no controller, serve de consulta de dados no banco 
 
 @Service
 public class TarefaService {
@@ -58,33 +53,33 @@ public class TarefaService {
         }
     }
 
-    public void prepare(Tarefa tarefa){
-        try(var sessao = store.openSession()){
-            tarefa.setStatus(StatusTransacao.PEDING);
+    public void prepare(Tarefa tarefa) {
+        try (var sessao = store.openSession()) {
+            if (tarefa.getId() != null && sessao.advanced().exists(tarefa.getId())) {
+                throw new RuntimeException("Tarefa já existe: " + tarefa.getId());
+            }
+
             sessao.store(tarefa);
             sessao.saveChanges();
-            System.out.println("TAREFA -> PREPARE (PENDING)");
+            
+            System.out.println("TAREFA -> PREPARE (Salva no banco)");
         }
     }
-
-    public void commit(String id){
-        try(var sessao = store.openSession()){
-            Tarefa tarefa = sessao.load(Tarefa.class, id);
-            if(tarefa != null){
-                tarefa.setStatus(StatusTransacao.CONFIRMED);
-                sessao.saveChanges();
-                System.out.println("TAREFA -> COMMIT (CONFIRMED)");
-            }
-        }
+    
+    public void commit(String id) {
+        System.out.println("TAREFA -> COMMIT (Confirmado ID: " + id + ")");
     }
 
-    public void rollback(String id){
-        try(var sessao = store.openSession()){
+    public void rollback(String id) {
+        try (var sessao = store.openSession()) {
             Tarefa tarefa = sessao.load(Tarefa.class, id);
-            if(tarefa != null){
-                tarefa.setStatus(StatusTransacao.ABORTED);
+            
+            if (tarefa != null) {
+                sessao.delete(tarefa); 
                 sessao.saveChanges();
-                System.out.println("TAREFA -> ROLLBACK (ABORTED)");
+                System.out.println("TAREFA -> ROLLBACK (Tarefa removida por erro na transação)");
+            } else {
+                System.out.println("TAREFA -> ROLLBACK (Nada a fazer, tarefa não encontrada)");
             }
         }
     }

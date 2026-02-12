@@ -6,7 +6,6 @@ import net.ravendb.client.documents.DocumentStore;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-// Gerencia as requisições relacionadas às notificações, por meio da API
 @RestController
 @RequestMapping("/notificacoes")
 public class NotificacaoController {
@@ -22,7 +21,7 @@ public class NotificacaoController {
     //Criar notificação (PREPARE)
     @PostMapping
     public String criar(@RequestBody Notificacao notificacao) {
-
+        // O ID é gerado aqui com o prefixo "notificacoes/"
         notificacao.setId("notificacoes/" + java.util.UUID.randomUUID());
         notificacaoService.prepare(notificacao);
 
@@ -32,6 +31,10 @@ public class NotificacaoController {
     //Confirmar (COMMIT)
     @PutMapping("/{id}/confirmar")
     public String confirmar(@PathVariable String id) {
+        // CORREÇÃO: Tratamento de prefixo
+        if (!id.startsWith("notificacoes/")) {
+            id = "notificacoes/" + id;
+        }
 
         notificacaoService.commit(id);
         return "Notificação confirmada!";
@@ -40,6 +43,10 @@ public class NotificacaoController {
     //Cancelar (ROLLBACK)
     @PutMapping("/{id}/cancelar")
     public String cancelar(@PathVariable String id) {
+        // CORREÇÃO: Tratamento de prefixo
+        if (!id.startsWith("notificacoes/")) {
+            id = "notificacoes/" + id;
+        }
 
         notificacaoService.rollback(id);
         return "Notificação cancelada!";
@@ -56,6 +63,11 @@ public class NotificacaoController {
     //Buscar por ID
     @GetMapping("/{id}")
     public Notificacao buscarPorId(@PathVariable String id) {
+        // CORREÇÃO: Tratamento de prefixo
+        if (!id.startsWith("notificacoes/")) {
+            id = "notificacoes/" + id;
+        }
+
         try (var sessao = store.openSession()) {
             return sessao.load(Notificacao.class, id);
         }

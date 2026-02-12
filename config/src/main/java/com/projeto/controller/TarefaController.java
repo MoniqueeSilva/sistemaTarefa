@@ -5,9 +5,6 @@ import com.projeto.service.TarefaService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-// O Controller serve para "conversar" com o postman
-// Ele recebe requisições, lê JSON, chama o service e devolve resposta
-
 @RestController
 @RequestMapping("/tarefas")
 public class TarefaController {
@@ -31,12 +28,15 @@ public class TarefaController {
 
     @GetMapping("/{id}")
     public Tarefa buscar(@PathVariable String id) {
+        // CORREÇÃO APLICADA: Tratamento do prefixo
+        if (!id.startsWith("tarefas/")) {
+            id = "tarefas/" + id;
+        }
         return service.buscarPorId(id);
     }
 
     @PutMapping("/{id}")
     public String atualizar(@PathVariable String id, @RequestBody Tarefa tarefa) {
-        // TRUQUE: Se o ID chegou sem o "tarefas/", a gente coloca na mão
         if (!id.startsWith("tarefas/")) {
             id = "tarefas/" + id;
         }
@@ -47,7 +47,6 @@ public class TarefaController {
 
     @DeleteMapping("/{id}")
     public String deletar(@PathVariable String id) {
-        // TRUQUE: Mesma coisa aqui. O Postman manda "1-A", a gente transforma em "tarefas/1-A"
         if (!id.startsWith("tarefas/")) {
             id = "tarefas/" + id;
         }
