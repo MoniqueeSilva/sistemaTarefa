@@ -13,7 +13,7 @@ public class RavenConfig {
     @Bean
     public DocumentStore documentStore() {
         DocumentStore store = new DocumentStore(
-                new String[]{"http://localhost:8080"}, "MinhaBase"
+                new String[]{"http://127.0.0.1:8080"}, "tarefasDB"
         );
         store.initialize();
         return store;

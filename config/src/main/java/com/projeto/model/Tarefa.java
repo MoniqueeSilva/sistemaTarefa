@@ -5,15 +5,17 @@ package com.projeto.model;
 public class Tarefa {
     private String id, descricao;
     private boolean concluida;
+    private StatusTransacao status;
 
     // Construtor vazio para o Jackson/Spring poderem criar o objeto
     public Tarefa() {
     }
 
-    public Tarefa(String id, String descricao, boolean concluida){
+    public Tarefa(String id, String descricao, boolean concluida, StatusTransacao status){
         this.id = id;
         this.descricao = descricao;
         this.concluida = concluida;
+        this.status = status;
     }
 
     public String getId(){
@@ -35,5 +37,12 @@ public class Tarefa {
     }
     public void setConcluida(boolean concluida){
         this.concluida = concluida;
+    }
+
+    public StatusTransacao getStatus(){
+        return status;
+    }
+    public void setStatus(StatusTransacao status){
+        this.status = status;
     }
 }
