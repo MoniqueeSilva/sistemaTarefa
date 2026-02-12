@@ -4,6 +4,7 @@ import com.projeto.model.Notificacao;
 import net.ravendb.client.documents.DocumentStore;
 import org.springframework.stereotype.Service;
 
+// Controla o estado da notificação no BD
 @Service
 public class NotificacaoService {
 

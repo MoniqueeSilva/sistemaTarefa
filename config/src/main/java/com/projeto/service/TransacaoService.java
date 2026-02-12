@@ -4,6 +4,7 @@ import com.projeto.model.Tarefa;
 import com.projeto.model.Notificacao;
 import org.springframework.stereotype.Service;
 
+// O coordenador, quem controla tudo 
 @Service
 public class TransacaoService {
 
@@ -21,10 +22,6 @@ public class TransacaoService {
         notificacao.setMensagem("Nova tarefa: " + tarefa.getDescricao());
 
         try{
-
-            // =========================
-            // FASE 1 - PREPARE
-            // =========================
             System.out.println("=== FASE 1: PREPARE ===");
 
             tarefaService.prepare(tarefa);
@@ -35,9 +32,6 @@ public class TransacaoService {
                 throw new RuntimeException("Erro simulado!");
             }
 
-            // =========================
-            // FASE 2 - COMMIT
-            // =========================
             System.out.println("=== FASE 2: COMMIT ===");
 
             tarefaService.commit(tarefa.getId());
@@ -47,9 +41,6 @@ public class TransacaoService {
 
         } catch(Exception e){
 
-            // =========================
-            // ROLLBACK
-            // =========================
             System.out.println("=== ROLLBACK ===");
 
             tarefaService.rollback(tarefa.getId());

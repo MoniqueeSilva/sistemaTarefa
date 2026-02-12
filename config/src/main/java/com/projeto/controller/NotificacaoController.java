@@ -4,9 +4,9 @@ import com.projeto.model.Notificacao;
 import com.projeto.service.NotificacaoService;
 import net.ravendb.client.documents.DocumentStore;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+// Gerencia as requisições relacionadas às notificações, por meio da API
 @RestController
 @RequestMapping("/notificacoes")
 public class NotificacaoController {
@@ -19,7 +19,7 @@ public class NotificacaoController {
         this.store = store;
     }
 
-    // 🔹 Criar notificação (PREPARE)
+    //Criar notificação (PREPARE)
     @PostMapping
     public String criar(@RequestBody Notificacao notificacao) {
 
@@ -29,7 +29,7 @@ public class NotificacaoController {
         return "Notificação criada com status PENDING";
     }
 
-    // 🔹 Confirmar (COMMIT)
+    //Confirmar (COMMIT)
     @PutMapping("/{id}/confirmar")
     public String confirmar(@PathVariable String id) {
 
@@ -37,7 +37,7 @@ public class NotificacaoController {
         return "Notificação confirmada!";
     }
 
-    // 🔹 Cancelar (ROLLBACK)
+    //Cancelar (ROLLBACK)
     @PutMapping("/{id}/cancelar")
     public String cancelar(@PathVariable String id) {
 
@@ -45,7 +45,7 @@ public class NotificacaoController {
         return "Notificação cancelada!";
     }
 
-    // 🔹 Listar todas
+    //Listar todas
     @GetMapping
     public List<Notificacao> listar() {
         try (var sessao = store.openSession()) {
@@ -53,7 +53,7 @@ public class NotificacaoController {
         }
     }
 
-    // 🔹 Buscar por ID
+    //Buscar por ID
     @GetMapping("/{id}")
     public Notificacao buscarPorId(@PathVariable String id) {
         try (var sessao = store.openSession()) {
