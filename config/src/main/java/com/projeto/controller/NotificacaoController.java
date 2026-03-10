@@ -21,7 +21,6 @@ public class NotificacaoController {
     //Criar notificação (PREPARE)
     @PostMapping
     public String criar(@RequestBody Notificacao notificacao) {
-        // O ID é gerado aqui com o prefixo "notificacoes/"
         notificacao.setId("notificacoes/" + java.util.UUID.randomUUID());
         notificacaoService.prepare(notificacao);
 
@@ -31,7 +30,6 @@ public class NotificacaoController {
     //Confirmar (COMMIT)
     @PutMapping("/{id}/confirmar")
     public String confirmar(@PathVariable String id) {
-        // CORREÇÃO: Tratamento de prefixo
         if (!id.startsWith("notificacoes/")) {
             id = "notificacoes/" + id;
         }
@@ -43,7 +41,6 @@ public class NotificacaoController {
     //Cancelar (ROLLBACK)
     @PutMapping("/{id}/cancelar")
     public String cancelar(@PathVariable String id) {
-        // CORREÇÃO: Tratamento de prefixo
         if (!id.startsWith("notificacoes/")) {
             id = "notificacoes/" + id;
         }
@@ -63,7 +60,6 @@ public class NotificacaoController {
     //Buscar por ID
     @GetMapping("/{id}")
     public Notificacao buscarPorId(@PathVariable String id) {
-        // CORREÇÃO: Tratamento de prefixo
         if (!id.startsWith("notificacoes/")) {
             id = "notificacoes/" + id;
         }

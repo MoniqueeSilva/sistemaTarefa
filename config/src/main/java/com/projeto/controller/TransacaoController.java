@@ -4,7 +4,7 @@ import com.projeto.model.Tarefa;
 import com.projeto.service.TransacaoService;
 import org.springframework.web.bind.annotation.*;
 
-// Recebe a requisição para iniciar uma transação, pega os dados da tarefa e o parâmetro de erro.
+// Recebe a requisição para iniciar uma transação, pega os dados da tarefa/notificação e o parâmetro de erro.
 @RestController
 @RequestMapping("/transacao")
 public class TransacaoController {
